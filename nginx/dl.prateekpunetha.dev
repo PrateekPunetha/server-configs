@@ -1,0 +1,25 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name dl.prateekpunetha.dev;
+    return 302 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name dl.prateekpunetha.dev;
+
+    ssl_certificate /etc/cloudflare/dl.prateekpunetha.dev.pem;
+    ssl_certificate_key /etc/cloudflare/dl.prateekpunetha.dev.key;
+
+    root /var/www/dl;
+    index  index.html  index.php  /_h5ai/public/index.php;
+
+    location ~ \.php$ {
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
+            fastcgi_index index.php;
+            include fastcgi.conf;
+        }
+}
