@@ -16,6 +16,9 @@ server {
     root /var/www/dl;
     index  index.html  index.php  /_h5ai/public/index.php;
 
+    # Enforce HSTS
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
     location ~ \.php$ {
             fastcgi_split_path_info ^(.+\.php)(/.+)$;
             fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
